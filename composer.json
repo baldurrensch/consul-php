@@ -1,0 +1,17 @@
+{
+    "name": "br/consul-php",
+    "description": "PHP library to interact with the consul.io service",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Baldur Rensch",
+            "email": "brensch@gmail.com"
+        }
+    ],
+    "require": {
+        "guzzle/guzzle": "~3.9"
+    },
+    "autoload": {
+        "psr-0": { "BR\\Consul\\": "src/" }
+    }
+}
