@@ -1,1 +1,9 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+X-Consul-Index: 482
+X-Consul-Knownleader: true
+X-Consul-Lastcontact: 0
+Date: Mon, 05 May 2014 02:11:33 GMT
+Content-Length: 78
+
 [{"CreateIndex":410,"ModifyIndex":410,"Key":"key1","Flags":0,"Value":"YWJj"}]

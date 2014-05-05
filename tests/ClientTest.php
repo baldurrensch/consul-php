@@ -13,7 +13,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client('http://localhost:8500');
         $mock = new MockPlugin();
-        $mock->addResponse($this->createMockResponse(200, 'get-value_key1'));
+        $mock->addResponse(__DIR__ . '/fixtures/get-value_key1');
         $client->addGuzzlePlugin($mock);
 
         $result = $client->getValue('key1');
@@ -38,8 +38,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client('http://localhost:8500');
         $mock = new MockPlugin();
-        $mock->addResponse($this->createMockResponse(200, 'get-value_key1'));
-        $mock->addResponse($this->createMockResponse(200, 'set-value_key2'));
+        $mock->addResponse(__DIR__ . '/fixtures/get-value_key1');
+        $mock->addResponse(__DIR__ . '/fixtures/set-value_key2');
         $mock->addResponse($this->createMockResponse(200));
         $client->addGuzzlePlugin($mock);
 
@@ -57,7 +57,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client('http://localhost:8500');
         $mock = new MockPlugin();
-        $mock->addResponse($this->createMockResponse(200, 'set-value_key2'));
+        $mock->addResponse(__DIR__ . '/fixtures/set-value_key2');
         $client->addGuzzlePlugin($mock);
 
         $result = $client->setValue('key2', 'doge');
@@ -81,10 +81,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->getValue('key1');
     }
 
-    protected function createMockResponse($status = 200, $contentName = null)
+    protected function createMockResponse($status = 200)
     {
-        $content = $contentName ? file_get_contents(__DIR__ . '/fixtures/' . $contentName) : null;
-
         $response = new Response(
             $status,
             [
@@ -92,8 +90,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 'X-Consul-Index' => 410,
                 'X-Consul-Knownleader' => 'true',
                 'X-Consul-Lastcontact' => 0,
-            ],
-            $content
+            ]
         );
 
         return $response;
