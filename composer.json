@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "php": ">= 5.5",
         "guzzle/guzzle": "~3.9"
     },
     "autoload": {
