@@ -26,13 +26,14 @@ class Client
     }
 
     /**
-     * @param  string $key
+     * @param  string            $key
+     * @param  string|null       $datacenter
      * @throws NotFoundException
      * @return KeyValue
      */
-    public function getValue($key)
+    public function getValue($key, $datacenter = null)
     {
-        $command = $this->client->getCommand('GetValue', ['key' => $key]);
+        $command = $this->client->getCommand('GetValue', ['key' => $key, 'datacenter' => $datacenter,]);
         try {
             $result = $command->execute();
         } catch (ClientErrorResponseException $e) {
@@ -43,13 +44,21 @@ class Client
     }
 
     /**
-     * @param  string $key
-     * @param  string $value
+     * @param  string      $key
+     * @param  string      $value
+     * @param  string|null $datacenter
      * @return mixed
      */
-    public function setValue($key, $value)
+    public function setValue($key, $value, $datacenter = null)
     {
-        $command = $this->client->getCommand('SetValue', ['key' => $key, 'value' => $value]);
+        $command = $this->client->getCommand(
+            'SetValue',
+            [
+                'key' => $key,
+                'value' => $value,
+                'datacenter' => $datacenter,
+            ]
+        );
         $command->prepare();
 
         $result = $command->execute();
@@ -58,12 +67,13 @@ class Client
     }
 
     /**
-     * @param  string $key
+     * @param  string      $key
+     * @param  string|null $datacenter
      * @return mixed
      */
-    public function deleteValue($key)
+    public function deleteValue($key, $datacenter = null)
     {
-        $command = $this->client->getCommand('DeleteValue', ['key' => $key]);
+        $command = $this->client->getCommand('DeleteValue', ['key' => $key, 'datacenter' => $datacenter,]);
         $result = $command->execute();
 
         return $result;

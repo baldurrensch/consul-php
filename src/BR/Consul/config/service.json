@@ -13,7 +13,13 @@
                 "key": {
                     "location": "uri",
                     "description": "Key of the value to retrieve",
-                    "required": "true"
+                    "required": true
+                },
+                "datacenter": {
+                    "sentAs": "dc",
+                    "location": "query",
+                    "description": "Which datacenter to query",
+                    "required": false
                 }
             }
         },
@@ -25,12 +31,18 @@
                 "key": {
                     "location": "uri",
                     "description": "Key of the value to retrieve",
-                    "required": "true"
+                    "required": true
                 },
                 "value": {
                     "location": "body",
                     "description": "the new value",
-                    "required": "true"
+                    "required": true
+                },
+                "datacenter": {
+                    "sentAs": "dc",
+                    "location": "query",
+                    "description": "Which datacenter to store to",
+                    "required": false
                 }
             }
         },
@@ -42,7 +54,13 @@
                 "key": {
                     "location": "uri",
                     "description": "Key of the value to delete",
-                    "required": "true"
+                    "required": true
+                },
+                "datacenter": {
+                    "sentAs": "dc",
+                    "location": "query",
+                    "description": "Which datacenter to delete from",
+                    "required": false
                 }
             }
         }

@@ -3,6 +3,7 @@
 namespace BR\Consul\Test;
 
 use BR\Consul\Client;
+use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Guzzle\Plugin\Mock\MockPlugin;
 
@@ -31,6 +32,25 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->addGuzzlePlugin($mock);
 
         $result = $client->getValue('key1');
+    }
+
+    public function testKeyValueDatacenter()
+    {
+        $client = new Client('http://localhost:8500');
+        $mock = new MockPlugin();
+        $mock->addResponse($this->createMockResponse(200, 'get-value_key1'));
+        $mock->addResponse($this->createMockResponse(200, 'set-value_key2'));
+        $mock->addResponse($this->createMockResponse(200));
+        $client->addGuzzlePlugin($mock);
+
+        $client->getValue('key1', 'datacenter1');
+        $client->setValue('key1', 'doge', 'datacenter1');
+        $client->deleteValue('key1', 'datacenter1');
+
+        /** @var $request Request */
+        foreach ($mock->getReceivedRequests() as $request) {
+            $this->assertEquals('http://localhost:8500/v1/kv/key1?dc=datacenter1', $request->getUrl());
+        }
     }
 
     public function testKeyValueSet()
