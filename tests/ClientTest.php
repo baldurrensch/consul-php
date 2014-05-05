@@ -20,6 +20,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('abc', $result->getValue());
     }
 
+    /**
+     * @expectedException \BR\Consul\Exception\NotFoundException
+     */
+    public function testKeyValueGetNotFound()
+    {
+        $client = new Client('http://localhost:8500');
+        $mock = new MockPlugin();
+        $mock->addResponse($this->createMockResponse(404));
+        $client->addGuzzlePlugin($mock);
+
+        $result = $client->getValue('key1');
+    }
+
     public function testKeyValueSet()
     {
         $client = new Client('http://localhost:8500');
@@ -33,7 +46,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Guzzle\Http\Exception\ClientErrorResponseException
+     * @expectedException \BR\Consul\Exception\NotFoundException
      */
     public function testKeyValueDelete()
     {

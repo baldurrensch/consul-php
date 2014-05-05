@@ -2,7 +2,9 @@
 
 namespace BR\Consul;
 
+use BR\Consul\Exception\NotFoundException;
 use BR\Consul\Model\KeyValue;
+use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Service\Client as GuzzleClient;
 use Guzzle\Service\Description\ServiceDescription;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,13 +26,18 @@ class Client
     }
 
     /**
-     * @param  string   $key
+     * @param  string $key
+     * @throws NotFoundException
      * @return KeyValue
      */
     public function getValue($key)
     {
         $command = $this->client->getCommand('GetValue', ['key' => $key]);
-        $result = $command->execute();
+        try {
+            $result = $command->execute();
+        } catch (ClientErrorResponseException $e) {
+            throw new NotFoundException();
+        }
 
         return $result;
     }
