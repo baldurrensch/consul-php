@@ -127,8 +127,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $service = clone $baseService;
         $service->setId('abc');
         $service->setTags(['abc']);
+        $service->addTag('def');
         $service->setPort(8080);
-        $testCases[] = [$service, '{"Name":"test","ID":"abc","Port":8080,"Tags":["abc"]}'];
+        $testCases[] = [$service, '{"Name":"test","ID":"abc","Port":8080,"Tags":["abc","def"]}'];
 
         return $testCases;
     }
