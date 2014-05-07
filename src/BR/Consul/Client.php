@@ -4,7 +4,9 @@ namespace BR\Consul;
 
 use BR\Consul\Exception\NotFoundException;
 use BR\Consul\Model\KeyValue;
+use BR\Consul\Model\Service;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use Guzzle\Http\Message\Response;
 use Guzzle\Service\Client as GuzzleClient;
 use Guzzle\Service\Description\ServiceDescription;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -77,6 +79,26 @@ class Client
         $result = $command->execute();
 
         return $result;
+    }
+
+    /**
+     * @param  Service $service
+     * @return boolean
+     */
+    public function registerService(Service $service)
+    {
+        $command = $this->client->getCommand(
+            'AgentServiceRegister',
+            [
+                'Name' => $service->getName(),
+                'ID' => $service->getId(),
+                'Port' => $service->getPort(),
+                'Tags' => $service->getTags(),
+            ]
+        );
+        $result = $command->execute();
+
+        return $result->isSuccessful();
     }
 
     /**
