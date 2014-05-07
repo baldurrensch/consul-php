@@ -3,8 +3,9 @@ Consul.io PHP library
 
 [![Build Status](https://travis-ci.org/baldurrensch/consul-php.svg?branch=master)](https://travis-ci.org/baldurrensch/consul-php)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/baldurrensch/consul-php/badges/quality-score.png?s=47ccfd304909099f4a5e1241dc3d30db8f8d0134)](https://scrutinizer-ci.com/g/baldurrensch/consul-php/)
+[![Code Coverage](https://scrutinizer-ci.com/g/baldurrensch/consul-php/badges/coverage.png?s=2aaa77c2ffbd7d5332a43d04f81216f7b32d1cb5)](https://scrutinizer-ci.com/g/baldurrensch/consul-php/)
 
-This is a PHP library for the [consul.io] application.
+This is a PHP library for the [consul.io] application. Note that this is in development right now. Feel free to open PRs.
 
 Installation
 ------------
