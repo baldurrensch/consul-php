@@ -1,7 +1,9 @@
 Consul.io PHP library
 =====================
 
-This is a PHP library for the Consul.io[link] application.
+[![Build Status](https://travis-ci.org/baldurrensch/consul-php.svg?branch=master)](https://travis-ci.org/baldurrensch/consul-php)
+
+This is a PHP library for the [consul.io] application.
 
 Installation
 ------------
@@ -40,3 +42,5 @@ Tests
 -----
 
 Run the unit and functional tests by running `phpunit` in the root of the repository.
+
+[consul.io]: http://www.consul.io/
