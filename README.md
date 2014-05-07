@@ -40,6 +40,23 @@ $client->deleteValue('myKey');
 $client->deleteValue('myKey', 'datacenter-east'); // Delete the value from the datacenter-east datacenter
 ```
 
+### 2. Agent
+
+#### 2.1 Registering a service with the agent
+
+In order to register a service, you have to create a `BR\Consul\Model\Service` object, and pass it to the
+`Client::registerService()` function. Example:
+
+```php
+$service = new \BR\Consul\Model\Service();
+$service->setName('postgres');
+$service->setId('postegres-1');
+$service->setTags(['master']);
+$service->setPort(5432);
+
+$success = $client->registerService($service);
+```
+
 Tests
 -----
 

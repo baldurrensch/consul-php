@@ -3,6 +3,7 @@
 namespace BR\Consul\Test;
 
 use BR\Consul\Client;
+use BR\Consul\Model\Service;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
 use Guzzle\Plugin\Mock\MockPlugin;
@@ -79,6 +80,57 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->deleteValue('key1');
 
         $client->getValue('key1');
+    }
+
+    /**
+     * @dataProvider getTestServices
+     */
+    public function testServiceRegister(Service $service, $expectedRequest)
+    {
+        $client = new Client('http://localhost:8500');
+
+        $mock = new MockPlugin();
+        $mock->readBodies(true);
+        $mock->addResponse(__DIR__ . '/fixtures/service-register');
+        $client->addGuzzlePlugin($mock);
+
+        $result = $client->registerService($service);
+
+        /** @var $request \Guzzle\Http\Message\EntityEnclosingRequest */
+        $request = current($mock->getReceivedRequests());
+        $this->assertEquals($expectedRequest, $request->getBody()->__toString(), 'Sent correct request');
+
+        $this->assertTrue($result, 'Returns correct response');
+    }
+
+    public function getTestServices()
+    {
+        $testCases = [];
+
+        $baseService = new Service();
+        $baseService->setName('test');
+
+        $testCases[] = [$baseService, '{"Name":"test"}'];
+
+        $service = clone $baseService;
+        $service->setPort(8080);
+        $testCases[] = [$service, '{"Name":"test","Port":8080}'];
+
+        $service = clone $baseService;
+        $service->setId('abc');
+        $testCases[] = [$service, '{"Name":"test","ID":"abc"}'];
+
+        $service = clone $baseService;
+        $service->setTags(['abc']);
+        $testCases[] = [$service, '{"Name":"test","Tags":["abc"]}'];
+
+        $service = clone $baseService;
+        $service->setId('abc');
+        $service->setTags(['abc']);
+        $service->setPort(8080);
+        $testCases[] = [$service, '{"Name":"test","ID":"abc","Port":8080,"Tags":["abc"]}'];
+
+        return $testCases;
     }
 
     protected function createMockResponse($status = 200)

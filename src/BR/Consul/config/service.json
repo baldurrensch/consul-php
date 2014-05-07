@@ -63,6 +63,37 @@
                     "required": false
                 }
             }
+        },
+        "AgentServiceRegister": {
+            "httpMethod": "PUT",
+            "uri": "/v1/agent/service/register",
+            "summary": "Registers a service with the agent",
+            "parameters": {
+                "Name": {
+                    "location": "json",
+                    "description": "Name of the service",
+                    "required": true,
+                    "type": "string"
+                },
+                "ID": {
+                    "location": "json",
+                    "description": "Id of the service",
+                    "required": false,
+                    "type": "string"
+                },
+                "Port": {
+                    "location": "json",
+                    "description": "Port of the service",
+                    "required": false,
+                    "type": "integer"
+                },
+                "Tags": {
+                    "location": "json",
+                    "description": "Tags of the service",
+                    "required": false,
+                    "type": "array"
+                }
+            }
         }
     }
 }
