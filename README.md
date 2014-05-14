@@ -57,9 +57,30 @@ $service->setPort(5432);
 $success = $client->registerService($service);
 ```
 
+#### 2.2 Retrieving a list of all services registered with the agent
+
+You can retrieve a list of services that are registered with the agent. Example:
+
+```php
+$service = new \BR\Consul\Model\Service();
+$services = $service->getServices();
+var_dump(count($services));
+
+/** $srv \BR\Consul\Model\Service */
+foreach ($services as $srv) {
+    echo $srv->getName()
+}
+```
+
 Tests
 -----
 
 Run the unit and functional tests by running `phpunit` in the root of the repository.
 
 [consul.io]: http://www.consul.io/
+
+To run consul, use: 
+
+```bash
+$ ./consul agent -data-dir . --bootstrap -server
+```

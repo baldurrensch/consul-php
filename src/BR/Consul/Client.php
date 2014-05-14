@@ -5,6 +5,7 @@ namespace BR\Consul;
 use BR\Consul\Exception\NotFoundException;
 use BR\Consul\Model\KeyValue;
 use BR\Consul\Model\Service;
+use BR\Consul\Model\ServiceList;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Message\Response;
 use Guzzle\Service\Client as GuzzleClient;
@@ -99,6 +100,19 @@ class Client
         $result = $command->execute();
 
         return $result->isSuccessful();
+    }
+
+    /**
+     * @return ServiceList
+     */
+    public function getServices()
+    {
+        $command = $this->client->getCommand(
+            'AgentGetServices'
+        );
+        $result = $command->execute();
+
+        return $result;
     }
 
     /**

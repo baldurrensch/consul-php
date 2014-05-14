@@ -134,6 +134,24 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         return $testCases;
     }
 
+    public function testGetServices()
+    {
+        $client = new Client('http://localhost:8500');
+
+        $mock = new MockPlugin();
+        $mock->addResponse(__DIR__ . '/fixtures/services-get');
+        $client->addGuzzlePlugin($mock);
+
+        $response = $client->getServices();
+        $this->assertCount(2, $response, 'correct number of services');
+
+        $expectedServices = $this->getExpectedServices();
+
+        for ($i = 0; $i < count($expectedServices); $i++) {
+            $this->assertService($response[$i], $expectedServices[$i]);
+        }
+    }
+
     protected function createMockResponse($status = 200)
     {
         $response = new Response(
@@ -147,5 +165,36 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
 
         return $response;
+    }
+
+    /**
+     * @return array
+     */
+    private function getExpectedServices()
+    {
+        $expectedServices = [
+            [
+                'name' => 'test',
+                'id' => 'abc',
+                'port' => 8080,
+                'tags' => ['abc', 'def'],
+            ],
+            [
+                'name' => 'test',
+                'id' => 'test',
+                'port' => 0,
+                'tags' => ['abc',],
+            ],
+        ];
+
+        return $expectedServices;
+    }
+
+    private function assertService(Service $service, $expectedService)
+    {
+        $this->assertEquals($expectedService['name'], $service->getName(), 'correct name');
+        $this->assertEquals($expectedService['id'], $service->getId(), 'correct id');
+        $this->assertEquals($expectedService['port'], $service->getPort(), 'correct port');
+        $this->assertEquals($expectedService['tags'], $service->getTags(), 'correct tags');
     }
 }
