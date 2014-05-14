@@ -94,6 +94,12 @@
                     "type": "array"
                 }
             }
+        },
+        "AgentGetServices": {
+            "httpMethod": "GET",
+            "uri": "/v1/agent/services",
+            "summary": "Retrieves a list of services that are registered with this agent",
+            "responseClass": "BR\\Consul\\Model\\ServiceList"
         }
     }
 }

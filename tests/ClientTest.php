@@ -134,6 +134,40 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         return $testCases;
     }
 
+    public function testGetServices()
+    {
+        $client = new Client('http://localhost:8500');
+
+        $mock = new MockPlugin();
+        $mock->addResponse(__DIR__ . '/fixtures/services-get');
+        $client->addGuzzlePlugin($mock);
+
+        $response = $client->getServices();
+        $this->assertCount(2, $response, 'correct number of services');
+
+        $expectedServices = [
+            [
+                'name' => 'test',
+                'id' => 'abc',
+                'port' => 8080,
+                'tags' => ['abc', 'def'],
+            ],
+            [
+                'name' => 'test',
+                'id' => 'test',
+                'port' => 0,
+                'tags' => ['abc',],
+            ],
+        ];
+
+        for ($i = 0; $i < count($expectedServices); $i++) {
+            $this->assertEquals($expectedServices[$i]['name'], $response[$i]->getName(), 'correct name');
+            $this->assertEquals($expectedServices[$i]['id'], $response[$i]->getId(), 'correct id');
+            $this->assertEquals($expectedServices[$i]['port'], $response[$i]->getPort(), 'correct port');
+            $this->assertEquals($expectedServices[$i]['tags'], $response[$i]->getTags(), 'correct tags');
+        }
+    }
+
     protected function createMockResponse($status = 200)
     {
         $response = new Response(

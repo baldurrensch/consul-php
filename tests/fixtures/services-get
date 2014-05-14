@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Wed, 14 May 2014 06:41:12 GMT
+Content-Length: 133
+
+{
+    "abc":{"ID":"abc","Service":"test","Tags":["abc","def"],"Port":8080},
+    "test":{"ID":"test","Service":"test","Tags":["abc"],"Port":0}
+}
