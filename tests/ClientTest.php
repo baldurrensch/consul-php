@@ -145,26 +145,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $response = $client->getServices();
         $this->assertCount(2, $response, 'correct number of services');
 
-        $expectedServices = [
-            [
-                'name' => 'test',
-                'id' => 'abc',
-                'port' => 8080,
-                'tags' => ['abc', 'def'],
-            ],
-            [
-                'name' => 'test',
-                'id' => 'test',
-                'port' => 0,
-                'tags' => ['abc',],
-            ],
-        ];
+        $expectedServices = $this->getExpectedServices();
 
         for ($i = 0; $i < count($expectedServices); $i++) {
-            $this->assertEquals($expectedServices[$i]['name'], $response[$i]->getName(), 'correct name');
-            $this->assertEquals($expectedServices[$i]['id'], $response[$i]->getId(), 'correct id');
-            $this->assertEquals($expectedServices[$i]['port'], $response[$i]->getPort(), 'correct port');
-            $this->assertEquals($expectedServices[$i]['tags'], $response[$i]->getTags(), 'correct tags');
+            $this->assertService($response[$i], $expectedServices[$i]);
         }
     }
 
@@ -181,5 +165,36 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
 
         return $response;
+    }
+
+    /**
+     * @return array
+     */
+    private function getExpectedServices()
+    {
+        $expectedServices = [
+            [
+                'name' => 'test',
+                'id' => 'abc',
+                'port' => 8080,
+                'tags' => ['abc', 'def'],
+            ],
+            [
+                'name' => 'test',
+                'id' => 'test',
+                'port' => 0,
+                'tags' => ['abc',],
+            ],
+        ];
+
+        return $expectedServices;
+    }
+
+    private function assertService(Service $service, $expectedService)
+    {
+        $this->assertEquals($expectedService['name'], $service->getName(), 'correct name');
+        $this->assertEquals($expectedService['id'], $service->getId(), 'correct id');
+        $this->assertEquals($expectedService['port'], $service->getPort(), 'correct port');
+        $this->assertEquals($expectedService['tags'], $service->getTags(), 'correct tags');
     }
 }
