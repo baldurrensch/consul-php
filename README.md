@@ -18,8 +18,11 @@ $ composer require "br/consul-php"
 
 2. Instantiate the library:
 
+Depending on which part of the library you want to use, instantiate the correct Client:
+
 ```php
-$client = new \BR\Consul\Client('http://localhost:8500');
+$client = new \BR\Consul\Agent('http://localhost:8500'); // to issue commands to the local agent
+$client = new \BR\Consul\KeyValueStore('http://localhost:8500'); // to access the Key Value Store
 ```
 
 Usage

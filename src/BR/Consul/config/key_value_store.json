@@ -1,0 +1,64 @@
+{
+    "operations": {
+        "GetValue": {
+            "httpMethod": "GET",
+            "uri": "/v1/kv/{key}",
+            "summary": "Gets a value from the key/value storage",
+            "responseClass": "BR\\Consul\\Model\\KeyValue",
+            "parameters": {
+                "key": {
+                    "location": "uri",
+                    "description": "Key of the value to retrieve",
+                    "required": true
+                },
+                "datacenter": {
+                    "sentAs": "dc",
+                    "location": "query",
+                    "description": "Which datacenter to query",
+                    "required": false
+                }
+            }
+        },
+        "SetValue": {
+            "httpMethod": "PUT",
+            "uri": "/v1/kv/{key}",
+            "summary": "Sets a value to the key/value storage",
+            "parameters": {
+                "key": {
+                    "location": "uri",
+                    "description": "Key of the value to retrieve",
+                    "required": true
+                },
+                "value": {
+                    "location": "body",
+                    "description": "the new value",
+                    "required": true
+                },
+                "datacenter": {
+                    "sentAs": "dc",
+                    "location": "query",
+                    "description": "Which datacenter to store to",
+                    "required": false
+                }
+            }
+        },
+        "DeleteValue": {
+            "httpMethod": "DELETE",
+            "uri": "/v1/kv/{key}",
+            "summary": "Gets a value from the key/value storage",
+            "parameters": {
+                "key": {
+                    "location": "uri",
+                    "description": "Key of the value to delete",
+                    "required": true
+                },
+                "datacenter": {
+                    "sentAs": "dc",
+                    "location": "query",
+                    "description": "Which datacenter to delete from",
+                    "required": false
+                }
+            }
+        }
+    }
+}
