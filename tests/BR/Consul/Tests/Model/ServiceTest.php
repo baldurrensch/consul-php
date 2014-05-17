@@ -1,6 +1,6 @@
 <?php
 
-namespace BR\Consul\Test\Model;
+namespace BR\Consul\Tests\Model;
 
 use BR\Consul\Model\Service;
 

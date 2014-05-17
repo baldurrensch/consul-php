@@ -1,93 +1,19 @@
 <?php
 
-namespace BR\Consul\Test;
+namespace BR\Consul\Tests;
 
-use BR\Consul\Client;
+use BR\Consul\Agent;
 use BR\Consul\Model\Service;
-use Guzzle\Http\Message\Request;
-use Guzzle\Http\Message\Response;
 use Guzzle\Plugin\Mock\MockPlugin;
 
-class ClientTest extends \PHPUnit_Framework_TestCase
+class AgentTest extends ClientTest
 {
-    public function testKeyValueGet()
-    {
-        $client = new Client('http://localhost:8500');
-        $mock = new MockPlugin();
-        $mock->addResponse(__DIR__ . '/fixtures/get-value_key1');
-        $client->addGuzzlePlugin($mock);
-
-        $result = $client->getValue('key1');
-        $this->assertEquals('key1', $result->getKey());
-        $this->assertEquals('abc', $result->getValue());
-    }
-
-    /**
-     * @expectedException \BR\Consul\Exception\NotFoundException
-     */
-    public function testKeyValueGetNotFound()
-    {
-        $client = new Client('http://localhost:8500');
-        $mock = new MockPlugin();
-        $mock->addResponse($this->createMockResponse(404));
-        $client->addGuzzlePlugin($mock);
-
-        $result = $client->getValue('key1');
-    }
-
-    public function testKeyValueDatacenter()
-    {
-        $client = new Client('http://localhost:8500');
-        $mock = new MockPlugin();
-        $mock->addResponse(__DIR__ . '/fixtures/get-value_key1');
-        $mock->addResponse(__DIR__ . '/fixtures/set-value_key2');
-        $mock->addResponse($this->createMockResponse(200));
-        $client->addGuzzlePlugin($mock);
-
-        $client->getValue('key1', 'datacenter1');
-        $client->setValue('key1', 'doge', 'datacenter1');
-        $client->deleteValue('key1', 'datacenter1');
-
-        /** @var $request Request */
-        foreach ($mock->getReceivedRequests() as $request) {
-            $this->assertEquals('http://localhost:8500/v1/kv/key1?dc=datacenter1', $request->getUrl());
-        }
-    }
-
-    public function testKeyValueSet()
-    {
-        $client = new Client('http://localhost:8500');
-        $mock = new MockPlugin();
-        $mock->addResponse(__DIR__ . '/fixtures/set-value_key2');
-        $client->addGuzzlePlugin($mock);
-
-        $result = $client->setValue('key2', 'doge');
-
-        $this->assertTrue($result);
-    }
-
-    /**
-     * @expectedException \BR\Consul\Exception\NotFoundException
-     */
-    public function testKeyValueDelete()
-    {
-        $client = new Client('http://localhost:8500');
-        $mock = new MockPlugin();
-        $mock->addResponse($this->createMockResponse(200));
-        $mock->addResponse($this->createMockResponse(404));
-        $client->addGuzzlePlugin($mock);
-
-        $client->deleteValue('key1');
-
-        $client->getValue('key1');
-    }
-
     /**
      * @dataProvider getTestServices
      */
     public function testServiceRegister(Service $service, $expectedRequest)
     {
-        $client = new Client('http://localhost:8500');
+        $client = new Agent('http://localhost:8500');
 
         $mock = new MockPlugin();
         $mock->readBodies(true);
@@ -136,7 +62,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testGetServices()
     {
-        $client = new Client('http://localhost:8500');
+        $client = new Agent('http://localhost:8500');
 
         $mock = new MockPlugin();
         $mock->addResponse(__DIR__ . '/fixtures/services-get');
@@ -154,7 +80,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testServiceDeregister()
     {
-        $client = new Client('http://localhost:8500');
+        $client = new Agent('http://localhost:8500');
 
         $mock = new MockPlugin();
         $mock->addResponse(__DIR__ . '/fixtures/service-deregister');
@@ -167,7 +93,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testServiceRemove()
     {
-        $client = new Client('http://localhost:8500');
+        $client = new Agent('http://localhost:8500');
 
         $mock = new MockPlugin();
         $mock->addResponse(__DIR__ . '/fixtures/service-deregister');
@@ -179,21 +105,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $response = $client->removeService($service);
 
         $this->assertTrue($response);
-    }
-
-    protected function createMockResponse($status = 200)
-    {
-        $response = new Response(
-            $status,
-            [
-                'Content-Type' => 'application/json',
-                'X-Consul-Index' => 410,
-                'X-Consul-Knownleader' => 'true',
-                'X-Consul-Lastcontact' => 0,
-            ]
-        );
-
-        return $response;
     }
 
     /**
@@ -226,4 +137,4 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedService['port'], $service->getPort(), 'correct port');
         $this->assertEquals($expectedService['tags'], $service->getTags(), 'correct tags');
     }
-}
+} 
