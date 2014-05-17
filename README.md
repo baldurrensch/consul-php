@@ -50,7 +50,7 @@ In order to register a service, you have to create a `BR\Consul\Model\Service` o
 ```php
 $service = new \BR\Consul\Model\Service();
 $service->setName('postgres');
-$service->setId('postegres-1');
+$service->setId('postgres-1');
 $service->setTags(['master']);
 $service->setPort(5432);
 
@@ -62,7 +62,6 @@ $success = $client->registerService($service);
 You can retrieve a list of services that are registered with the agent. Example:
 
 ```php
-$service = new \BR\Consul\Model\Service();
 $services = $service->getServices();
 var_dump(count($services));
 
@@ -70,6 +69,14 @@ var_dump(count($services));
 foreach ($services as $srv) {
     echo $srv->getName()
 }
+```
+
+#### 2.3 Removing a service from the agent
+
+```php
+$client->deregisterService('postgres-1');
+// alternatively
+$client->removeService($service);
 ```
 
 Tests

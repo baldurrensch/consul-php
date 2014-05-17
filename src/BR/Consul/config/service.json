@@ -100,6 +100,18 @@
             "uri": "/v1/agent/services",
             "summary": "Retrieves a list of services that are registered with this agent",
             "responseClass": "BR\\Consul\\Model\\ServiceList"
+        },
+        "AgentServiceDeregister": {
+            "httpMethod": "DELETE",
+            "uri": "/v1/agent/service/deregister/{serviceId}",
+            "summary": "Remove a service from the local agent",
+            "parameters": {
+                "serviceId": {
+                    "location": "uri",
+                    "description": "service id of the service to deregister",
+                    "required": true
+                }
+            }
         }
     }
 }

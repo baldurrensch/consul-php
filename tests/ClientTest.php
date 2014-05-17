@@ -152,6 +152,35 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testServiceDeregister()
+    {
+        $client = new Client('http://localhost:8500');
+
+        $mock = new MockPlugin();
+        $mock->addResponse(__DIR__ . '/fixtures/service-deregister');
+        $client->addGuzzlePlugin($mock);
+
+        $response = $client->deregisterService('abc');
+
+        $this->assertTrue($response);
+    }
+
+    public function testServiceRemove()
+    {
+        $client = new Client('http://localhost:8500');
+
+        $mock = new MockPlugin();
+        $mock->addResponse(__DIR__ . '/fixtures/service-deregister');
+        $client->addGuzzlePlugin($mock);
+
+        $service = new Service();
+        $service->setId('abc');
+
+        $response = $client->removeService($service);
+
+        $this->assertTrue($response);
+    }
+
     protected function createMockResponse($status = 200)
     {
         $response = new Response(

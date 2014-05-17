@@ -7,7 +7,6 @@ use BR\Consul\Model\KeyValue;
 use BR\Consul\Model\Service;
 use BR\Consul\Model\ServiceList;
 use Guzzle\Http\Exception\ClientErrorResponseException;
-use Guzzle\Http\Message\Response;
 use Guzzle\Service\Client as GuzzleClient;
 use Guzzle\Service\Description\ServiceDescription;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -29,6 +28,10 @@ class Client
     }
 
     /**
+     * Gets a value from the key/value store
+     *
+     * @link http://www.consul.io/docs/agent/http.html#toc_3
+     *
      * @param  string            $key
      * @param  string|null       $datacenter
      * @throws NotFoundException
@@ -47,6 +50,10 @@ class Client
     }
 
     /**
+     * Sets a value in the key/value store
+     *
+     * @link http://www.consul.io/docs/agent/http.html#toc_3
+     *
      * @param  string      $key
      * @param  string      $value
      * @param  string|null $datacenter
@@ -70,6 +77,10 @@ class Client
     }
 
     /**
+     * Deletes a value from the key/value store.
+     *
+     * @link http://www.consul.io/docs/agent/http.html#toc_3
+     *
      * @param  string      $key
      * @param  string|null $datacenter
      * @return mixed
@@ -83,6 +94,10 @@ class Client
     }
 
     /**
+     * Registers a service with the local agent.
+     *
+     * @link http://www.consul.io/docs/agent/http.html#toc_15
+     *
      * @param  Service $service
      * @return boolean
      */
@@ -103,6 +118,10 @@ class Client
     }
 
     /**
+     * Returns a list of services that are currently registered with the local agent
+     *
+     * @link http://www.consul.io/docs/agent/http.html#toc_6
+     *
      * @return ServiceList
      */
     public function getServices()
@@ -113,6 +132,37 @@ class Client
         $result = $command->execute();
 
         return $result;
+    }
+
+    /**
+     * Removes a service from the local agent.
+     *
+     * @link http://www.consul.io/docs/agent/http.html#toc_16
+     *
+     * @param  string $serviceId
+     * @return boolean
+     */
+    public function deregisterService($serviceId)
+    {
+        $command = $this->client->getCommand('AgentServiceDeregister', ['serviceId' => $serviceId]);
+
+        $result = $command->execute();
+
+        return $result->isSuccessful();
+    }
+
+    /**
+     * Removes a service from the local agent.
+     *
+     * @link http://www.consul.io/docs/agent/http.html#toc_16
+     * @see Client::deregisterService()
+     *
+     * @param Service $service
+     * @return bool
+     */
+    public function removeService(Service $service)
+    {
+        return $this->deregisterService($service->getId());
     }
 
     /**
