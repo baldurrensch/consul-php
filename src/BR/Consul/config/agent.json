@@ -1,0 +1,53 @@
+{
+    "operations": {
+        "AgentServiceRegister": {
+            "httpMethod": "PUT",
+            "uri": "/v1/agent/service/register",
+            "summary": "Registers a service with the agent",
+            "parameters": {
+                "Name": {
+                    "location": "json",
+                    "description": "Name of the service",
+                    "required": true,
+                    "type": "string"
+                },
+                "ID": {
+                    "location": "json",
+                    "description": "Id of the service",
+                    "required": false,
+                    "type": "string"
+                },
+                "Port": {
+                    "location": "json",
+                    "description": "Port of the service",
+                    "required": false,
+                    "type": "integer"
+                },
+                "Tags": {
+                    "location": "json",
+                    "description": "Tags of the service",
+                    "required": false,
+                    "type": "array"
+                }
+            }
+        },
+        "AgentGetServices": {
+            "httpMethod": "GET",
+            "uri": "/v1/agent/services",
+            "summary": "Retrieves a list of services that are registered with this agent",
+            "responseClass": "BR\\Consul\\Model\\ServiceList"
+        },
+        "AgentServiceDeregister": {
+            "httpMethod": "DELETE",
+            "uri": "/v1/agent/service/deregister/{serviceId}",
+            "summary": "Remove a service from the local agent",
+            "parameters": {
+                "serviceId": {
+                    "location": "uri",
+                    "description": "service id of the service to deregister",
+                    "required": true
+                }
+            }
+        }
+    }
+}
