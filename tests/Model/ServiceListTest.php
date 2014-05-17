@@ -6,7 +6,7 @@ use BR\Consul\Model\ServiceList;
 
 class ServiceListTest extends \PHPUnit_Framework_TestCase
 {
-    public function offsetExists()
+    public function testOffsetExists()
     {
         $serviceList = new ServiceList([0 => true, 1 => true, 2 => true]);
 
@@ -14,7 +14,7 @@ class ServiceListTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($serviceList->offsetExists(4));
     }
 
-    public function offsetSet()
+    public function testOffsetSet()
     {
         $serviceList = new ServiceList([0 => true, 1 => true, 2 => true]);
 
