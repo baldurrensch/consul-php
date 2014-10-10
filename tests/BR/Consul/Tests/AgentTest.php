@@ -3,6 +3,8 @@
 namespace BR\Consul\Tests;
 
 use BR\Consul\Agent;
+use BR\Consul\Model\Datacenter;
+use BR\Consul\Model\DatacenterList;
 use BR\Consul\Model\Service;
 use Guzzle\Plugin\Mock\MockPlugin;
 
