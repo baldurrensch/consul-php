@@ -4,6 +4,7 @@
     "description": "This is the Consul.io HTTP API",
     "includes": [
         "key_value_store.json",
-        "agent.json"
+        "agent.json",
+        "catalog.json"
     ]
 }

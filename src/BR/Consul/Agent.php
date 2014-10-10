@@ -2,6 +2,7 @@
 
 namespace BR\Consul;
 
+use BR\Consul\Model\DatacenterList;
 use BR\Consul\Model\Service;
 use BR\Consul\Model\ServiceList;
 
@@ -77,5 +78,21 @@ class Agent extends AbstractClient
     public function removeService(Service $service)
     {
         return $this->deregisterService($service->getId());
+    }
+
+    /**
+     * Retrieves the list of datacenters known by Consul.
+     *
+     * @link http://www.consul.io/docs/agent/http.html#toc_26
+     *
+     * @return DatacenterList
+     */
+    public function getDatacenters()
+    {
+        $command = $this->client->getCommand('AgentCatalogGetDatacenters');
+
+        $result = $command->execute();
+
+        return $result;
     }
 } 

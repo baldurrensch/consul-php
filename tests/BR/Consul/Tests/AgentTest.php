@@ -3,6 +3,8 @@
 namespace BR\Consul\Tests;
 
 use BR\Consul\Agent;
+use BR\Consul\Model\Datacenter;
+use BR\Consul\Model\DatacenterList;
 use BR\Consul\Model\Service;
 use Guzzle\Plugin\Mock\MockPlugin;
 
@@ -105,6 +107,25 @@ class AgentTest extends ClientTest
         $response = $client->removeService($service);
 
         $this->assertTrue($response);
+    }
+
+    public function testGetDatacenters()
+    {
+        $client = new Agent('http://localhost:8500');
+
+        $mock = new MockPlugin();
+        $mock->addResponse(__DIR__ . '/fixtures/get-datacenters');
+        $client->addGuzzlePlugin($mock);
+
+        $response = $client->getDatacenters();
+
+        $expectedDatacenterList = new DatacenterList(
+            [
+                new Datacenter('dc1')
+            ]
+        );
+
+        $this->assertEquals($expectedDatacenterList, $response);
     }
 
     /**

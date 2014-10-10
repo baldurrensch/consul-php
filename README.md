@@ -83,6 +83,20 @@ $client->deregisterService('postgres-1');
 $client->removeService($service);
 ```
 
+### 3. Catalog
+
+#### 3.1. Get a list of datacenters
+
+```php
+$datacenters = $client->getDatacenters();
+var_dump(count($datacenters));
+
+/** $datacenter \BR\Consul\Model\Datacenter */
+foreach ($datacenters as $datacenter) {
+    echo $datacenter->getName();
+}
+```
+
 Tests
 -----
 

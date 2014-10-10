@@ -1,0 +1,10 @@
+{
+    "operations": {
+        "AgentCatalogGetDatacenters": {
+            "httpMethod": "GET",
+            "uri": "/v1/catalog/datacenters",
+            "summary": "Retrieves a list of datacenters",
+            "responseClass": "BR\\Consul\\Model\\DatacenterList"
+        }
+    }
+}
